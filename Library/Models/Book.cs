@@ -17,7 +17,7 @@ namespace Library.Models
         [Required]
         public string Year { get; set; }
         [Required]
-        public int Pages_number { get; set; }
+        public int PagesNumber { get; set; }
         [Required]
         public int Available { get; set; }
     }

@@ -38,7 +38,7 @@ namespace Library.Services
                 existingBook.Name = book.Name;
                 existingBook.Writer = book.Writer;
                 existingBook.Year = book.Year;
-                existingBook.Pages_number = book.Pages_number;
+                existingBook.PagesNumber = book.PagesNumber;
                 existingBook.Available = book.Available;
 
                 _applicationDbContext.Books.Update(existingBook);
