@@ -1,4 +1,6 @@
+using Library.Interfaces;
 using Library.Models;
+using Library.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +40,8 @@ namespace Library
 
             //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IBook, BookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
