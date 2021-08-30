@@ -14,5 +14,6 @@ namespace Library.Models
 
         }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Member> Members { get; set; }
     }
 }
