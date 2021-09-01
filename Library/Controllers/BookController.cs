@@ -17,13 +17,13 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetBooks()
+        public IActionResult Index()
         {
             return Ok(_bookService.GetBooks());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetBook(int id)
+        public IActionResult View(int id)
         {
             var book = _bookService.GetBook(id);
             if(book != null)
@@ -34,7 +34,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook(Book book)
+        public IActionResult Create(Book book)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace Library.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult EditBook(int id, Book book)
+        public IActionResult Edit(int id, Book book)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteBook(int id)
+        public IActionResult Delete(int id)
         {
             //var book = _applicationDbContext.Books.Find(id);
             var book = _bookService.GetBook(id);

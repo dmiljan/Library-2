@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Library.Models
 {
@@ -15,5 +11,6 @@ namespace Library.Models
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Member> Members { get; set; }
+        public DbSet<Rental> RentedBooks { get; set; }
     }
 }

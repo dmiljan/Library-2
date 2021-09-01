@@ -43,6 +43,7 @@ namespace Library
 
             services.AddScoped<IBook, BookService>();
             services.AddScoped<IMember, MemberService>();
+            services.AddScoped<IRental, RentalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

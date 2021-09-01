@@ -2,10 +2,6 @@
 using Library.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
@@ -20,13 +16,13 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMembers()
+        public IActionResult Index()
         {
             return Ok(_memberService.GetMembers());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetMember(int id)
+        public IActionResult View(int id)
         {
             var member = _memberService.GetMember(id);
             if(member != null)
@@ -37,7 +33,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMember(Member member)
+        public IActionResult Create(Member member)
         {
             if (ModelState.IsValid)
             {
@@ -48,7 +44,7 @@ namespace Library.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult EditMember(int id, Member member)
+        public IActionResult Edit(int id, Member member)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +62,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteMember(int id)
+        public IActionResult Delete(int id)
         {
             var member = _memberService.GetMember(id);
 
@@ -75,7 +71,6 @@ namespace Library.Controllers
                 _memberService.DeleteMember(member);
                 return Ok();
             }
-
             return NotFound($"Book with Id: {id} was not found");
         }
     }
