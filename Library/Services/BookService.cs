@@ -49,6 +49,15 @@ namespace Library.Services
             return book;
         }
 
+        public Book GetBookByName(string name)
+        {
+            var book = _applicationDbContext.Books
+                .Where(b => b.Name == name)
+                .FirstOrDefault();
+
+            return book;
+        }
+
         public List<Book> GetBooks()
         {
             var books = _applicationDbContext.Books.ToList();

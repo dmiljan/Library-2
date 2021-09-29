@@ -30,7 +30,18 @@ namespace Library.Controllers
             {
                 return Ok(book);
             }
-            return NotFound($"Book with Id: {id} was not found");
+            return NotFound($"Book with Id: {id} was not found.");
+        }
+
+        [HttpGet("search/{name}")]
+        public IActionResult Search(string name)
+        {
+            var book = _bookService.GetBookByName(name);
+            if(book != null)
+            {
+                return Ok(book);
+            }
+            return NotFound($"Book with Name: {name} was not found.");
         }
 
         [HttpPost]

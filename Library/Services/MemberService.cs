@@ -46,6 +46,15 @@ namespace Library.Services
             return member;
         }
 
+        public Member GetMemberByName(string firstName, string lastName)
+        {
+            var member = _applicationDbContext.Members
+                .Where(m => m.FirstName == firstName && m.LastName == lastName)
+                .FirstOrDefault();
+
+            return member;
+        }
+
         public List<Member> GetMembers()
         {
             var members = _applicationDbContext.Members.ToList();

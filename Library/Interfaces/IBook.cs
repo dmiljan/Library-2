@@ -7,6 +7,7 @@ namespace Library.Interfaces
     {
         List<Book> GetBooks();
         Book GetBook(int id);
+        Book GetBookByName(string name);
         Book AddBook(Book book);
         void DeleteBook(Book book);
         void EditBook(Book book);

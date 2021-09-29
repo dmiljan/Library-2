@@ -29,7 +29,18 @@ namespace Library.Controllers
             {
                 return Ok(member);
             }
-            return NotFound($"Member with Id: {id} was not fount");
+            return NotFound($"Member with Id: {id} was not found");
+        }
+
+        [HttpGet("search/{firstName}/{lastName}")]
+        public IActionResult Search(string firstName, string lastName)
+        {
+            var member = _memberService.GetMemberByName(firstName, lastName);
+            if(member != null)
+            {
+                return Ok(member);
+            }
+            return NotFound($"Member with Name: {firstName} {lastName} was not found.");
         }
 
         [HttpPost]
