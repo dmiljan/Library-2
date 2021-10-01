@@ -32,6 +32,16 @@ namespace Library.Services
             return rentals;
         }
 
+        public List<Rental> GetRentsByNameMember(string firtstName, string lastName)
+        {
+            var rentals = _applicationDbContext.RentedBooks
+                .Include(r => r.Member)
+                .Where(r => r.Member.FirstName == firtstName && r.Member.LastName == lastName)
+                .ToList();
+
+            return rentals;
+        }
+
         public Rental RentBook(Rental rental)
         {
             _applicationDbContext.RentedBooks.Add(rental);

@@ -56,5 +56,17 @@ namespace Library.Controllers
             }
             return NotFound($"Rent with Id: {id} was not found");
         }
+
+        [HttpGet("search/{firstName}/{lastName}")]
+        public IActionResult Search(string firstName, string lastName)
+        {
+            var rentals = _rentalService.GetRentsByNameMember(firstName, lastName);
+
+            if(rentals != null)
+            {
+                return Ok(rentals);
+            }
+            return NotFound("Member doesn't have any rented books.");
+        }
     }
 }
