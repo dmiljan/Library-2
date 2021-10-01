@@ -11,5 +11,6 @@ namespace Library.Interfaces
         Member AddMember(Member member);
         void DeleteMember(Member member);
         void EditMember(Member member);
+        List<Rental> RentedBooks(int id);
     }
 }

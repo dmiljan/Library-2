@@ -1,5 +1,6 @@
 ﻿using Library.Interfaces;
 using Library.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,6 +60,16 @@ namespace Library.Services
         {
             var members = _applicationDbContext.Members.ToList();
             return members;
+        }
+
+        public List<Rental> RentedBooks(int id)
+        {
+            var rentedBooks = _applicationDbContext.RentedBooks
+                .Include(r => r.Book)
+                .Where(r => r.MemberId == id)
+                .ToList();
+
+            return rentedBooks;
         }
     }
 }

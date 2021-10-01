@@ -84,5 +84,17 @@ namespace Library.Controllers
             }
             return NotFound($"Book with Id: {id} was not found");
         }
+
+        [HttpGet("rentedBooks/{id}")]
+        public IActionResult RentedBooks(int id) 
+        {
+            var rentedBooks = _memberService.RentedBooks(id);
+
+            if (rentedBooks != null)
+            {
+                return Ok(rentedBooks);
+            }
+            return NotFound("Member doesn't have any rented books.");
+        }
     }
 }
