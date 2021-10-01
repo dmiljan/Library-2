@@ -10,6 +10,7 @@ namespace Library.Controllers
     public class RentalController : ControllerBase
     {
         private IRental _rentalService;
+
         public RentalController(IRental rentalService)
         {
             _rentalService = rentalService;
@@ -33,7 +34,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Rental rental)
+        public IActionResult Create(Rental rental)//Rent book
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +45,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id) //Return book
         {
             var rental = _rentalService.GetRent(id);
             
