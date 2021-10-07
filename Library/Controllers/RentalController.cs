@@ -2,6 +2,7 @@
 using Library.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
@@ -17,15 +18,15 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok(_rentalService.GetRents());
+            return Ok(await _rentalService.GetRents());
         }
 
         [HttpGet("{id}")]
-        public IActionResult View(int id)
+        public async Task<ActionResult> View(int id)
         {
-            var rent = _rentalService.GetRent(id);
+            var rent = await _rentalService.GetRent(id);
             if(rent != null)
             {
                 return Ok(rent);
@@ -34,33 +35,33 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Rental rental)//Rent book
+        public async Task<IActionResult> Create(Rental rental)//Rent book
         {
             if (ModelState.IsValid)
             {
-                _rentalService.RentBook(rental);
+                await _rentalService.RentBook(rental);
                 return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + rental.Id, rental);
             }
             return BadRequest();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id) //Return book
+        public async Task<IActionResult> Delete(int id) //Return book
         {
-            var rental = _rentalService.GetRent(id);
+            var rental = await _rentalService.GetRent(id);
             
             if(rental != null)
             {
-                _rentalService.ReturnBook(rental);
+                await _rentalService.ReturnBook(rental);
                 return Ok();
             }
             return NotFound($"Rent with Id: {id} was not found");
         }
 
         [HttpGet("search/{firstName}/{lastName}")]
-        public IActionResult Search(string firstName, string lastName)
+        public async Task<IActionResult> Search(string firstName, string lastName)
         {
-            var rentals = _rentalService.GetRentsByNameMember(firstName, lastName);
+            var rentals = await _rentalService.GetRentsByNameMember(firstName, lastName);
 
             if(rentals != null)
             {

@@ -1,7 +1,9 @@
 ﻿using Library.Interfaces;
 using Library.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Library.Services
 {
@@ -14,22 +16,22 @@ namespace Library.Services
             _applicationDbContext = applicationDbContext;
         }
 
-        public Book AddBook(Book book)
+        public async Task<Book> AddBook(Book book)
         {
-            _applicationDbContext.Books.Add(book);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.Books.AddAsync(book);
+            await _applicationDbContext.SaveChangesAsync();
             return book;
         }
 
-        public void DeleteBook(Book book)
+        public async Task DeleteBook(Book book)
         {
             _applicationDbContext.Books.Remove(book);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
 
-        public void EditBook(Book book)
+        public async Task EditBook(Book book)
         {
-            var existingBook = _applicationDbContext.Books.Find(book.Id);
+            var existingBook = await _applicationDbContext.Books.FindAsync(book.Id);
             if(existingBook != null)
             {
                 existingBook.Name = book.Name;
@@ -39,28 +41,28 @@ namespace Library.Services
                 existingBook.Available = book.Available;
 
                 _applicationDbContext.Books.Update(existingBook);
-                _applicationDbContext.SaveChanges();
+                await _applicationDbContext.SaveChangesAsync();
             }
         }
 
-        public Book GetBook(int id)
+        public async Task<Book> GetBook(int id)
         {
-            var book = _applicationDbContext.Books.Find(id);
+            var book = await _applicationDbContext.Books.FindAsync(id);
             return book;
         }
 
-        public Book GetBookByName(string name)
+        public async Task<Book> GetBookByName(string name)
         {
-            var book = _applicationDbContext.Books
+            var book = await _applicationDbContext.Books
                 .Where(b => b.Name == name)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return book;
         }
 
-        public List<Book> GetBooks()
+        public async Task<List<Book>> GetBooks()
         {
-            var books = _applicationDbContext.Books.ToList();
+            var books = await _applicationDbContext.Books.ToListAsync();
             return books;
         }
     }

@@ -1,15 +1,16 @@
 ﻿using Library.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Library.Interfaces
 {
     public interface IBook
     {
-        List<Book> GetBooks();
-        Book GetBook(int id);
-        Book GetBookByName(string name);
-        Book AddBook(Book book);
-        void DeleteBook(Book book);
-        void EditBook(Book book);
+        Task<List<Book>> GetBooks();
+        Task<Book> GetBook(int id);
+        Task<Book> GetBookByName(string name);
+        Task<Book> AddBook(Book book);
+        Task DeleteBook(Book book);
+        Task EditBook(Book book);
     }
 }

@@ -1,16 +1,17 @@
 ﻿using Library.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Library.Interfaces
 {
     public interface IMember
     {
-        List<Member> GetMembers();
-        Member GetMember(int id);
-        Member GetMemberByName(string firstName, string lastName);
-        Member AddMember(Member member);
-        void DeleteMember(Member member);
-        void EditMember(Member member);
-        List<Rental> RentedBooks(int id);
+        Task<List<Member>> GetMembers();
+        Task<Member> GetMember(int id);
+        Task<Member> GetMemberByName(string firstName, string lastName);
+        Task<Member> AddMember(Member member);
+        Task DeleteMember(Member member); 
+        Task EditMember(Member member); 
+        Task<List<Rental>> RentedBooks(int id);
     }
 }

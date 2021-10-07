@@ -2,6 +2,7 @@
 using Library.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
@@ -17,15 +18,15 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok(_bookService.GetBooks());
+            return Ok(await _bookService.GetBooks());
         }
 
         [HttpGet("{id}")]
-        public IActionResult View(int id)
+        public async Task<IActionResult> View(int id)
         {
-            var book = _bookService.GetBook(id);
+            var book = await _bookService.GetBook(id);
             if(book != null)
             {
                 return Ok(book);
@@ -34,9 +35,9 @@ namespace Library.Controllers
         }
 
         [HttpGet("search/{name}")]
-        public IActionResult Search(string name)
+        public async Task<IActionResult> Search(string name)
         {
-            var book = _bookService.GetBookByName(name);
+            var book = await _bookService.GetBookByName(name);
             if(book != null)
             {
                 return Ok(book);
@@ -45,11 +46,11 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Book book)
+        public async Task<IActionResult> Create(Book book)
         {
             if (ModelState.IsValid)
             {
-                _bookService.AddBook(book);
+                await _bookService.AddBook(book);
 
                 return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + book.Id, book);
             }
@@ -57,16 +58,16 @@ namespace Library.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Edit(int id, Book book)
+        public async Task<IActionResult> Edit(int id, Book book)
         {
             if (ModelState.IsValid)
             {
-                var existingBook = _bookService.GetBook(id);
+                var existingBook = await _bookService.GetBook(id);
 
                 if (existingBook != null)
                 {
                     book.Id = existingBook.Id;
-                    _bookService.EditBook(book);
+                    await _bookService.EditBook(book);
                 }
                 return Ok(book);
             }
@@ -74,13 +75,13 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             //var book = _applicationDbContext.Books.Find(id);
-            var book = _bookService.GetBook(id);
+            var book = await _bookService.GetBook(id);
             if(book != null)
             {
-                _bookService.DeleteBook(book);
+                await _bookService.DeleteBook(book);
                 return Ok();
             }
             return NotFound($"Book with Id: {id} was not found");

@@ -2,6 +2,7 @@
 using Library.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
@@ -16,15 +17,15 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok(_memberService.GetMembers());
+            return Ok(await _memberService.GetMembers());
         }
 
         [HttpGet("{id}")]
-        public IActionResult View(int id)
+        public async Task<IActionResult> View(int id)
         {
-            var member = _memberService.GetMember(id);
+            var member = await _memberService.GetMember(id);
             if(member != null)
             {
                 return Ok(member);
@@ -33,9 +34,9 @@ namespace Library.Controllers
         }
 
         [HttpGet("search/{firstName}/{lastName}")]
-        public IActionResult Search(string firstName, string lastName)
+        public async Task<IActionResult> Search(string firstName, string lastName)
         {
-            var member = _memberService.GetMemberByName(firstName, lastName);
+            var member = await _memberService.GetMemberByName(firstName, lastName);
             if(member != null)
             {
                 return Ok(member);
@@ -44,27 +45,27 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Member member)
+        public async Task<IActionResult> Create(Member member)
         {
             if (ModelState.IsValid)
             {
-                _memberService.AddMember(member);
+                await _memberService.AddMember(member);
                 return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + member.Id, member);
             }
             return BadRequest();
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Edit(int id, Member member)
+        public async Task<IActionResult> Edit(int id, Member member)
         {
             if (ModelState.IsValid)
             {
-                var existingMember = _memberService.GetMember(id);
+                var existingMember = await _memberService.GetMember(id);
 
                 if(existingMember != null)
                 {
                     member.Id = existingMember.Id;
-                    _memberService.EditMember(member);
+                    await _memberService.EditMember(member);
 
                     return Ok(member);
                 }
@@ -73,22 +74,22 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var member = _memberService.GetMember(id);
+            var member = await _memberService.GetMember(id);
 
             if(member != null)
             {
-                _memberService.DeleteMember(member);
+                await _memberService.DeleteMember(member);
                 return Ok();
             }
             return NotFound($"Book with Id: {id} was not found");
         }
 
         [HttpGet("rentedBooks/{id}")]
-        public IActionResult RentedBooks(int id) 
+        public async Task<IActionResult> RentedBooks(int id) 
         {
-            var rentedBooks = _memberService.RentedBooks(id);
+            var rentedBooks = await _memberService.RentedBooks(id);
 
             if (rentedBooks != null)
             {

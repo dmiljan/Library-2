@@ -3,6 +3,7 @@ using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Library.Services
 {
@@ -16,54 +17,54 @@ namespace Library.Services
             _bookService = bookService;
         }
 
-        public Rental GetRent(int id)
+        public async Task<Rental> GetRent(int id)
         {
-            var rental = _applicationDbContext.RentedBooks.Find(id);
+            var rental = await _applicationDbContext.RentedBooks.FindAsync(id);
             return rental;
         }
 
-        public List<Rental> GetRents()
+        public async Task<List<Rental>> GetRents()
         {
-            var rentals = _applicationDbContext.RentedBooks
+            var rentals = await _applicationDbContext.RentedBooks
                 .Include(r => r.Book)
                 .Include(r => r.Member)
-                .ToList();
+                .ToListAsync();
 
             return rentals;
         }
 
-        public List<Rental> GetRentsByNameMember(string firtstName, string lastName)
+        public async Task<List<Rental>> GetRentsByNameMember(string firtstName, string lastName)
         {
-            var rentals = _applicationDbContext.RentedBooks
+            var rentals = await _applicationDbContext.RentedBooks
                 .Include(r => r.Member)
                 .Where(r => r.Member.FirstName == firtstName && r.Member.LastName == lastName)
-                .ToList();
+                .ToListAsync();
 
             return rentals;
         }
 
-        public Rental RentBook(Rental rental)
+        public async Task<Rental> RentBook(Rental rental)
         {
-            _applicationDbContext.RentedBooks.Add(rental);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.RentedBooks.AddAsync(rental);
+            await _applicationDbContext.SaveChangesAsync();
 
-            var book = _bookService.GetBook(rental.BookId);
+            var book = await _bookService.GetBook(rental.BookId);
             var available = book.Available - 1;
             book.Available = available;
-            _bookService.EditBook(book);
+            await _bookService.EditBook(book);
 
             return rental;
         }
 
-        public void ReturnBook(Rental rental)
+        public async Task ReturnBook(Rental rental)
         {
             _applicationDbContext.RentedBooks.Remove(rental);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
 
-            var book = _bookService.GetBook(rental.BookId);
+            var book = await _bookService.GetBook(rental.BookId);
             var available = book.Available - 1;
             book.Available = available;
-            _bookService.EditBook(book);
+            await _bookService.EditBook(book);
         }
     }
 }

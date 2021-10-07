@@ -3,6 +3,7 @@ using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Library.Services
 {
@@ -13,22 +14,22 @@ namespace Library.Services
         {
             _applicationDbContext = applicationDbContext;
         }
-        public Member AddMember(Member member)
+        public async Task<Member> AddMember(Member member)
         {
-            _applicationDbContext.Members.Add(member);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.Members.AddAsync(member);
+            await _applicationDbContext.SaveChangesAsync();
             return member;
         }
 
-        public void DeleteMember(Member member)
+        public async Task DeleteMember(Member member) 
         {
             _applicationDbContext.Members.Remove(member);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
 
-        public void EditMember(Member member)
+        public async Task EditMember(Member member) 
         {
-            var existingMember = _applicationDbContext.Members.Find(member.Id);
+            var existingMember = await _applicationDbContext.Members.FindAsync(member.Id);
 
             if(existingMember != null)
             {
@@ -37,37 +38,37 @@ namespace Library.Services
                 existingMember.Email = member.Email;
 
                 _applicationDbContext.Members.Update(existingMember);
-                _applicationDbContext.SaveChanges();
+                await _applicationDbContext.SaveChangesAsync();
             }
         }
 
-        public Member GetMember(int id)
+        public async Task<Member> GetMember(int id)
         {
-            var member = _applicationDbContext.Members.Find(id);
+            var member = await _applicationDbContext.Members.FindAsync(id);
             return member;
         }
 
-        public Member GetMemberByName(string firstName, string lastName)
+        public async Task<Member> GetMemberByName(string firstName, string lastName)
         {
-            var member = _applicationDbContext.Members
+            var member = await _applicationDbContext.Members
                 .Where(m => m.FirstName == firstName && m.LastName == lastName)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return member;
         }
 
-        public List<Member> GetMembers()
+        public async Task<List<Member>> GetMembers()
         {
-            var members = _applicationDbContext.Members.ToList();
+            var members = await _applicationDbContext.Members.ToListAsync();
             return members;
         }
 
-        public List<Rental> RentedBooks(int id)
+        public async Task<List<Rental>> RentedBooks(int id)
         {
-            var rentedBooks = _applicationDbContext.RentedBooks
+            var rentedBooks = await _applicationDbContext.RentedBooks
                 .Include(r => r.Book)
                 .Where(r => r.MemberId == id)
-                .ToList();
+                .ToListAsync();
 
             return rentedBooks;
         }
